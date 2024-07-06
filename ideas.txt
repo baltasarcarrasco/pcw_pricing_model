@@ -1,0 +1,4 @@
+- Hacer el predictor
+- Ver por cuanto le erras, y que porcentaje queda arriba y cual abajo
+- En base a eso tratar de explotar lo del 30%
+- Precisas un 30% abajo, y lo mas cercano al umbral posible
