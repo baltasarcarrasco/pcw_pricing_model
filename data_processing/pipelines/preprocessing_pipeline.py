@@ -6,6 +6,7 @@ from utils.utils import (
     treat_missing_values,
     encode_categorical_features,
     generate_features,
+    select_features,
     save_data,
 )
 
@@ -17,7 +18,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("../logs/preprocessing.log"),
+        logging.FileHandler("logs/preprocessing.log"),
         logging.StreamHandler(),
     ],
 )
@@ -33,7 +34,7 @@ class DataPreprocessingPipeline:
             logging.error(f"Error loading data: {e}")
             raise
 
-    def preprocess(self, output_path):
+    def preprocess(self, output_path, training=True):
         logging.info("Preprocessing data...")
         try:
             logging.info("Treating missing values...")
@@ -44,8 +45,11 @@ class DataPreprocessingPipeline:
             self.data = encode_categorical_features(self.data)
             logging.info("Generating features...")
             self.data = generate_features(self.data)
+            logging.info("Selecting features...")
+            self.data = select_features(self.data, training=training)
             logging.info("Saving data...")
             save_data(self.data, output_path)
+            logging.info(f"Data saved successfully to {output_path}")
         except Exception as e:
             logging.error(f"Error during preprocessing: {e}")
             raise

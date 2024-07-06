@@ -1,3 +1,7 @@
 pandas
 seaborn
 openpyxl
+scikit-learn
+catboost
+xgboost
+lightgbm

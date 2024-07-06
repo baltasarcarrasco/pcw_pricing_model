@@ -138,6 +138,14 @@ def generate_features(df):
     return df
 
 
+def select_features(df, training=True):
+    columns_to_drop = ["timestamp", "quote_id"]
+    columns_to_drop.append("number_of_competitors") if training else None
+    df = df.drop(columns=columns_to_drop)
+
+    return df
+
+
 def save_data(df, file_path):
     """
     Save data to an excel file
