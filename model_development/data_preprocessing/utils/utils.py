@@ -1,5 +1,6 @@
 import pandas as pd
 import datetime as dt
+from sklearn.model_selection import train_test_split
 
 
 def load_data(file_path):
@@ -138,17 +139,38 @@ def generate_features(df):
     return df
 
 
-def select_features(df, training=True):
+def scale_numerical_features(df):
+    """
+    Scale numerical features
+    """
+
+    # Scale numerical features
+    numerical_features = df.select_dtypes(include=["int64", "float64"]).columns
+    for feature in numerical_features:
+        df[feature] = (df[feature] - df[feature].mean()) / df[feature].std()
+
+    return df
+
+
+def select_features(df, training_set=True):
+    # TODO: Implement feature selection using a feature importance technique (e.g. correlation or feature importance from a model)
     columns_to_drop = ["timestamp", "quote_id"]
-    columns_to_drop.append("number_of_competitors") if training else None
+    columns_to_drop.append("number_of_competitors") if training_set else None
     df = df.drop(columns=columns_to_drop)
 
     return df
 
 
-def save_data(df, file_path):
+def save_data(df, output_path, training_set=True):
     """
-    Save data to an excel file
+    Save data to an parquet file
     """
-
-    df.to_excel(file_path, index=False)
+    if training_set:
+        # split dataset into training, test and validation
+        train, test = train_test_split(df, test_size=0.2, random_state=42)
+        train.to_parquet(output_path + "train.parquet")
+        test, val = train_test_split(test, test_size=0.5, random_state=42)
+        test.to_parquet(output_path + "test.parquet")
+        val.to_parquet(output_path + "val.parquet")
+    else:
+        df.to_parquet(output_path + "final_validation_set.parquet")

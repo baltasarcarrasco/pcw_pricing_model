@@ -21,6 +21,13 @@ def avg_price_diff(competitor_lowest_prices, competitor_lowest_prices_pred):
     return avg_price_diff
 
 
-# Convert custom scoring functions to scorers
-avg_price_diff_score = make_scorer(avg_price_diff, greater_is_better=False)
-market_share_score = make_scorer(market_share)
+def avg_price_diff_score(
+    competitor_lowest_prices, competitor_lowest_prices_pred, market_share_threshold=0.3
+):
+    if (
+        market_share(competitor_lowest_prices, competitor_lowest_prices_pred)
+        > market_share_threshold
+    ):
+        return avg_price_diff(competitor_lowest_prices, competitor_lowest_prices_pred)
+    else:
+        return float("inf")

@@ -6,4 +6,14 @@
 - En base a eso tratar de explotar lo del 30%
 - Precisas un 30% abajo, y lo mas cercano al umbral posible
 
+- ELIMINAR LOS SYS.PATH
 
+- Pensar en agregar poetry 
+
+- Posible docker para deployment
+
+- Capaz mencionar que se podria haber hecho partes en pyspark si hubiera mayor volmen?
+
+- Terminar README
+
+- Enfocar la presentacion en lo teorico incluyendo partes que no desarrolle, el codigo lo van a leer igual
