@@ -1,8 +1,8 @@
-2024-07-09 01:30:27,231 - INFO - Cross-validated RMSE scores for LinearRegression: -0.8061547905495438
-2024-07-09 02:52:21,696 - INFO - Cross-validated RMSE scores for RandomForestRegressor: -0.7668746635731651
-2024-07-09 02:52:24,234 - INFO - Cross-validated RMSE scores for DecisionTreeRegressor: -1.0734268007047558
-2024-07-09 02:52:24,604 - INFO - Cross-validated RMSE scores for ElasticNet: -0.9974355974247701
-2024-07-09 02:52:43,228 - INFO - Cross-validated RMSE scores for GradientBoostingRegressor: -0.7495415337576536
-2024-07-09 02:52:45,566 - INFO - Cross-validated RMSE scores for XGBRegressor: -0.7471255026537243
-2024-07-09 02:53:19,222 - INFO - Cross-validated RMSE scores for CatBoostRegressor: -0.7343499436869562
-2024-07-09 02:53:21,024 - INFO - Cross-validated RMSE scores for LGBMRegressor: -0.7385382222785795
+2024-07-09 18:02:27,505 - INFO - Cross-validated RMSE scores for LinearRegression: -69.94693265983332
+2024-07-09 18:05:58,906 - INFO - Cross-validated RMSE scores for RandomForestRegressor: -66.5290487727998
+2024-07-09 18:06:01,895 - INFO - Cross-validated RMSE scores for DecisionTreeRegressor: -93.40179514660105
+2024-07-09 18:06:03,061 - INFO - Cross-validated RMSE scores for ElasticNet: -75.26752209409779
+2024-07-09 18:06:23,984 - INFO - Cross-validated RMSE scores for GradientBoostingRegressor: -65.03451653210274
+2024-07-09 18:06:25,923 - INFO - Cross-validated RMSE scores for XGBRegressor: -64.82480745738317
+2024-07-09 18:06:57,714 - INFO - Cross-validated RMSE scores for CatBoostRegressor: -63.71664009559099
+2024-07-09 18:06:59,195 - INFO - Cross-validated RMSE scores for LGBMRegressor: -64.07972680114223

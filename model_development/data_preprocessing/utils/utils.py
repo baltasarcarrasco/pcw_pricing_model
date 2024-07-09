@@ -13,12 +13,12 @@ def load_data(file_path):
 
 def treat_missing_values(df):
     """
-    Treat missing values in the dataframe
+    Treat missing values in the dataframe according to business logic
     """
 
-    # if driver_other_vehicles is missing, fill with "NONE"
+    # If driver_other_vehicles is missing, fill with "NONE"
     df["driver_other_vehicles"] = df["driver_other_vehicles"].fillna("NONE")
-    # if driver insured years is missing, fill with "ZERO"
+    # If driver insured years is missing, fill with "ZERO"
     df["driver_insured_years"] = df["driver_insured_years"].fillna("ZERO")
 
     # Create a new column 'has_occasional_driver' based on occasional_driver_birth_date.
@@ -44,10 +44,9 @@ def treat_missing_values(df):
 
 def clean_column_types(df):
     """
-    Cast columns to the correct data types
+    Cast columns in year-month format to datetime
     """
 
-    # Cast columns in year-month format to datetime
     df["vehicle_registration_ym"] = pd.to_datetime(
         df["vehicle_registration_ym"], format="%Y-%m"
     )
@@ -61,7 +60,7 @@ def clean_column_types(df):
 
 def encode_categorical_features(df):
     """
-    Encode categorical features
+    Encode categorical features using one-hot encoding or custom encodings
     """
 
     # Do one-hot encoding for driver_other_vehicles and vehicle_acquisition_state
@@ -101,7 +100,7 @@ def encode_categorical_features(df):
 
 def generate_features(df):
     """
-    Generate new features
+    Generate new features based on business logic
     """
 
     # Create column driver_age based on driver_birth_date
@@ -141,21 +140,26 @@ def generate_features(df):
 
 def scale_numerical_features(df):
     """
-    Scale numerical features
+    Scale numerical features using standardization
     """
 
-    # Scale numerical features
+    # Scale numerical features except for 'lowest_competitor_price
     numerical_features = df.select_dtypes(include=["int64", "float64"]).columns
     for feature in numerical_features:
-        df[feature] = (df[feature] - df[feature].mean()) / df[feature].std()
+        if feature != "competitor_lowest_price":
+            df[feature] = (df[feature] - df[feature].mean()) / df[feature].std()
 
     return df
 
 
 def select_features(df, training_set=True):
+    """
+    Drop features that are not relevant for the model
+    """
     # TODO: Implement feature selection using a feature importance technique (e.g. correlation or feature importance from a model)
-    columns_to_drop = ["timestamp", "quote_id"]
+    columns_to_drop = ["timestamp"]
     columns_to_drop.append("number_of_competitors") if training_set else None
+    columns_to_drop.append("quote_id") if training_set else None
     df = df.drop(columns=columns_to_drop)
 
     return df
@@ -173,4 +177,4 @@ def save_data(df, output_path, training_set=True):
         test.to_parquet(output_path + "test.parquet")
         val.to_parquet(output_path + "val.parquet")
     else:
-        df.to_parquet(output_path + "final_validation_set.parquet")
+        df.to_parquet(output_path + "final_test_set.parquet")

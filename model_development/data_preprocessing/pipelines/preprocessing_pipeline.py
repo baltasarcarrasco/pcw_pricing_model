@@ -1,7 +1,3 @@
-import sys
-
-# add parent directory to path
-sys.path.append("../")
 from logs.logger.logger import get_logger
 from utils.utils import (
     load_data,
@@ -14,9 +10,10 @@ from utils.utils import (
     save_data,
 )
 
+LOG_OUTPUT_PATH = "../../logs/preprocessing_pipeline.log"
 
 # Set up logging
-logger = get_logger("../logs/preprocessing_pipeline.log")
+logger = get_logger(LOG_OUTPUT_PATH)
 
 # TODO: Implement the class as an sklearn Transformer in order to use it in a sklearn pipeline
 
@@ -32,6 +29,9 @@ class DataPreprocessingPipeline:
             raise
 
     def preprocess(self, output_path, training_set=True):
+        """
+        Preprocess the data and save it to the output path
+        """
         logger.info("Preprocessing data...")
         try:
             logger.info("Treating missing values...")

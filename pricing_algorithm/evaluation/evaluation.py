@@ -1,7 +1,3 @@
-import sys
-
-# append parent directory to path
-sys.path.append("../../")
 from model_development.model_evaluation.utils.utils import (
     avg_price_diff,
     market_share,
@@ -10,10 +6,16 @@ from pricing_algorithm.pricing_algorithm import PricingAlgorithm
 from logs.logger.logger import get_logger
 import pandas as pd
 
-logger = get_logger("../../logs/pricing_algorithm_evaluation.log")
+LOG_OUTPUT_PATH = "../../logs/pricing_algorithm_evaluation.log"
+TEST_DATA_PATH = "../../data/processed/test.parquet"
+EVALUATION_RESULTS_PATH = "../../data/results/pricing_algorithm_evaluation_results.json"
+TEST_PREDICTIONS_OUTPUT_PATH = "../../data/predictions/test_predictions.parquet"
 
-# load data from 'data/processed/test.parquet'
-val = pd.read_parquet("../../data/processed/test.parquet")
+# Set up logging
+logger = get_logger(LOG_OUTPUT_PATH)
+
+# Load the data
+val = pd.read_parquet(TEST_DATA_PATH)
 
 # Split the dataset into features and target
 X_val = val.drop("competitor_lowest_price", axis=1)
@@ -28,7 +30,7 @@ try:
     # Save the predictions and the true values to a parquet file
     pd.DataFrame(
         {"competitor_lowest_price": y_val, "competitor_lowest_price_pred": y_pred}
-    ).to_parquet("../../data/predictions/test_predictions.parquet")
+    ).to_parquet(TEST_PREDICTIONS_OUTPUT_PATH)
 except Exception as e:
     logger.error(f"Error predicting on the validation set: {e}")
 
@@ -44,6 +46,4 @@ results = {
     "average_price_difference": avgerage_price_difference,
     "market_share": market_share_value,
 }
-pd.DataFrame(results, index=[0]).to_json(
-    "../../data/results/pricing_algorithm_evaluation_results.json", orient="records"
-)
+pd.DataFrame(results, index=[0]).to_json(EVALUATION_RESULTS_PATH, orient="records")

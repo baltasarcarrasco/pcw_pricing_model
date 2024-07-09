@@ -1,5 +1,4 @@
 import pandas as pd
-import sys
 from sklearn.model_selection import cross_val_score, KFold
 from sklearn.linear_model import LinearRegression, ElasticNet
 from sklearn.tree import DecisionTreeRegressor
@@ -8,16 +7,16 @@ from xgboost import XGBRegressor
 from catboost import CatBoostRegressor
 from lightgbm import LGBMRegressor
 import numpy as np
-
-# add parent directory to path
-sys.path.append("../../")
 from logs.logger.logger import get_logger
 
+LOG_OUTPUT_PATH = "../../../logs/models_experimentation.log"
+PROCESSED_TRAIN_DATA_PATH = "../../../data/processed/train.parquet"
+
 # Set up logging
-logger = get_logger("../../logs/models_experimentation.log")
+logger = get_logger(LOG_OUTPUT_PATH)
 
 # Load the data
-data = pd.read_parquet("../../data/processed/train.parquet")
+data = pd.read_parquet(PROCESSED_TRAIN_DATA_PATH)
 
 # Split the data into features and target
 X = data.drop("competitor_lowest_price", axis=1)
@@ -43,7 +42,9 @@ kf = KFold(n_splits=5, shuffle=True, random_state=42)
 # Iterate over the models
 for model in models:
     try:
+        # Get the model name
         model_name = model.__class__.__name__
+
         # Perform cross-validation
         rmse_scores = cross_val_score(
             model, X, y, cv=kf, scoring="neg_root_mean_squared_error"

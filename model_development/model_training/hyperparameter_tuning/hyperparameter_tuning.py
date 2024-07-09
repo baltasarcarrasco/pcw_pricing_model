@@ -2,38 +2,28 @@ import pandas as pd
 from catboost import CatBoostRegressor
 from sklearn.model_selection import RandomizedSearchCV
 import joblib
-import sys
-
-# add parent directory to path
-sys.path.append("../../../")
 from logs.logger.logger import get_logger
 
-MODEL_OUTPUT_PATH = (
-    "C:\\Users\\balta\\OneDrive\\Escritorio\\pcw_pricing_model\\models\\catboost.pkl"
-)
-
+MODEL_OUTPUT_PATH = "\\models\\catboost.pkl"
+PROCESSED_TRAIN_DATA_PATH = "../../../data/processed/train.parquet"
+LOG_OUTPUT_PATH = "../../../logs/hyperparameter_tuning.log"
 
 # Set up logging
-logger = get_logger("../../../logs/hyperparameter_tuning.log")
+logger = get_logger(LOG_OUTPUT_PATH)
 
 # Load the data
-data = pd.read_parquet("../../../data/processed/train.parquet")
+data = pd.read_parquet(PROCESSED_TRAIN_DATA_PATH)
 
 # Split the dataset into features and target
 X = data.drop("competitor_lowest_price", axis=1)
 y = data["competitor_lowest_price"]
 
+# Define the hyperparameters to tune
 param_grid = {
     "colsample_bylevel": [0.01, 0.1],
     "depth": [1, 3, 6, 9, 12],
     "boosting_type": ["Ordered", "Plain"],
     "bootstrap_type": ["Bayesian", "Bernoulli", "MVS"],
-}
-param_grid = {
-    "boosting_type": ["Ordered"],
-    "bootstrap_type": ["MVS"],
-    "colsample_bylevel": [0.1],
-    "depth": [9],
 }
 
 # Log the hyperparameters
@@ -44,11 +34,17 @@ best_params = None
 
 # Perform randomized grid search cross-validation
 try:
+    # Initialize the model
     model = CatBoostRegressor()
+
+    # Initialize the randomized search
     random_search = RandomizedSearchCV(
         model, param_grid, cv=5, scoring="neg_root_mean_squared_error"
     )
+
+    # Perform the search
     random_search.fit(X, y)
+
     # Get the best score and its hyperparameters
     best_params = random_search.best_params_
     best_score = random_search.best_score_

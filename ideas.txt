@@ -11,3 +11,5 @@
 - Terminar README
 
 - Enfocar la presentacion en lo teorico incluyendo partes que no desarrolle, el codigo lo van a leer igual
+
+- Automatizar toda la pipeline

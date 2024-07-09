@@ -1,4 +1,3 @@
-
 # PCW Pricing Model
 
 ## Overview
@@ -152,7 +151,7 @@ Logs for various processes are stored in the `logs` directory, including hyperpa
 
 ## Results
 
-Evaluation results are stored in the `data/results` directory.
+Evaluation results are stored in the `data/results` directory. The output file with the predictions for the test set is `data/predictions/final_predictions.csv`.
 
 ## Contributing
 
