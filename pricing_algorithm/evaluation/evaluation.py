@@ -1,16 +1,19 @@
-from model_evaluation.utils.utils import (
+import sys
+
+# append parent directory to path
+sys.path.append("../../")
+from model_development.model_evaluation.utils.utils import (
     avg_price_diff,
     market_share,
-    avg_price_diff_score,
 )
 from pricing_algorithm.pricing_algorithm import PricingAlgorithm
 from logs.logger.logger import get_logger
 import pandas as pd
 
-logger = get_logger("logs/model_evaluation.log")
+logger = get_logger("../../logs/pricing_algorithm_evaluation.log")
 
 # load data from 'data/processed/test.parquet'
-val = pd.read_parquet("data/processed/test.parquet")
+val = pd.read_parquet("../../data/processed/test.parquet")
 
 # Split the dataset into features and target
 X_val = val.drop("competitor_lowest_price", axis=1)
@@ -25,7 +28,7 @@ try:
     # Save the predictions and the true values to a parquet file
     pd.DataFrame(
         {"competitor_lowest_price": y_val, "competitor_lowest_price_pred": y_pred}
-    ).to_parquet("data/predictions/val_predictions.parquet")
+    ).to_parquet("../../data/predictions/test_predictions.parquet")
 except Exception as e:
     logger.error(f"Error predicting on the validation set: {e}")
 
@@ -35,16 +38,12 @@ logger.info(f"Average price difference: {avgerage_price_difference}")
 # Compute the market share
 market_share_value = market_share(y_val, y_pred)
 logger.info(f"Market share: {market_share_value}")
-# Compute the average price difference score
-avg_price_diff_score_value = avg_price_diff_score(y_val, y_pred)
-logger.info(f"Average price difference score: {avg_price_diff_score_value}")
 
 # Save the results to a json file
 results = {
     "average_price_difference": avgerage_price_difference,
     "market_share": market_share_value,
-    "average_price_difference_score": avg_price_diff_score_value,
 }
 pd.DataFrame(results, index=[0]).to_json(
-    "data/results/model_evaluation_results.json", orient="records"
+    "../../data/results/pricing_algorithm_evaluation_results.json", orient="records"
 )

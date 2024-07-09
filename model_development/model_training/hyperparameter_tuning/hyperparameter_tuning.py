@@ -5,7 +5,7 @@ import joblib
 import sys
 
 # add parent directory to path
-sys.path.append("../../")
+sys.path.append("../../../")
 from logs.logger.logger import get_logger
 
 MODEL_OUTPUT_PATH = (
@@ -14,10 +14,10 @@ MODEL_OUTPUT_PATH = (
 
 
 # Set up logging
-logger = get_logger("../../logs/hyperparameter_tuning.log")
+logger = get_logger("../../../logs/hyperparameter_tuning.log")
 
 # Load the data
-data = pd.read_parquet("../../data/processed/train.parquet")
+data = pd.read_parquet("../../../data/processed/train.parquet")
 
 # Split the dataset into features and target
 X = data.drop("competitor_lowest_price", axis=1)
@@ -28,6 +28,12 @@ param_grid = {
     "depth": [1, 3, 6, 9, 12],
     "boosting_type": ["Ordered", "Plain"],
     "bootstrap_type": ["Bayesian", "Bernoulli", "MVS"],
+}
+param_grid = {
+    "boosting_type": ["Ordered"],
+    "bootstrap_type": ["MVS"],
+    "colsample_bylevel": [0.1],
+    "depth": [9],
 }
 
 # Log the hyperparameters

@@ -17,7 +17,6 @@ def avg_price_diff(competitor_lowest_prices, competitor_lowest_prices_pred):
     # Calculate average price difference for the positive differences
     positive_differences = price_diff[price_diff > 0]
     avg_price_diff = np.mean(positive_differences)
-    print(avg_price_diff)
     return avg_price_diff
 
 

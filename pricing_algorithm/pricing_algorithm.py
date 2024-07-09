@@ -1,16 +1,14 @@
-from catboost import CatBoostRegressor
-import json
+import pandas as pd
+import joblib
 
 
 class PricingAlgorithm:
     def __init__(self):
-        model = CatBoostRegressor()
-        self.model = model.load_model("models/catboost_model.pkl")
+        self.model = joblib.load("../../models/catboost.pkl")
         # read threshold from config file
-        config_file = "config/config.json"
-        with open(config_file) as f:
-            config = json.load(f)
-            self.threshold = config["threshold"]
+        self.threshold = pd.read_json("../config/config.json")[
+            "pricing_algorithm_threshold"
+        ][0]
 
     def predict(self, data):
         prediction = self.model.predict(data)
