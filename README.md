@@ -149,9 +149,30 @@ The code for deploying the algorithm in AWS Sagemaker is located in the `pricing
 
 Logs for various processes are stored in the `logs` directory, including hyperparameter tuning, model evaluation, and pricing algorithm evaluation.
 
+## How to run
+
+```bash
+pip install -r requirements.txt
+```
+
+The pipeline runs in stages, one script per stage:
+
+1. Preprocessing: `model_development/data_preprocessing/data_preprocessing.py`
+2. Model experimentation and tuning: `model_development/model_training/model_experimentation/model_experimentation.py`, `model_development/model_training/hyperparameter_tuning/hyperparameter_tuning.py`
+3. Model evaluation: `model_development/model_evaluation/model_evaluation.py`
+4. Pricing threshold experimentation and evaluation: `pricing_algorithm/pricing_threshold_experimentation/pricing_threshold_experimentation.py`, `pricing_algorithm/evaluation/evaluation.py`
+5. Test-set predictions: `pricing_algorithm/predict/predict_test_set.py`
+
 ## Results
 
-Evaluation results are stored in the `data/results` directory. The output file with the predictions for the test set is `data/predictions/final_predictions.csv`.
+These figures come from the saved outputs in `data/results/`:
+
+| Evaluation | Avg. price difference (below lowest competitor) | Market share covered |
+|---|---|---|
+| Model evaluation | 60.56 | 39.3% |
+| Pricing algorithm evaluation | 62.40 | 42.4% |
+
+Both meet the ≥30% market-share constraint. Test-set predictions are in `data/predictions/final_predictions.csv`.
 
 ## Contributing
 
